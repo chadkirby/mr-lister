@@ -1,6 +1,6 @@
 {
   "name": "@ckirby/mr-lister",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "format lists of numbers, letters, or arbitrary items",
   "main": "./dist/cjs/index.js",
   "engines": {
