@@ -8,7 +8,7 @@ export default function stringList(
   let pat = /(?<start>\d+)(?:[.]?\s*[-\u2013\u2014]\s*(?<end>\d+))?/g;
   let res: RegExpExecArray | null;
   while ((res = pat.exec(str))) {
-    let {start, end} = res.groups as {start: string, end: string};
+    let {start, end = start} = res.groups as {start: string, end: string};
     if (end.length < start.length) {
       // if we have a range such as 110-15, then copy
       // the leading chars from the first num
