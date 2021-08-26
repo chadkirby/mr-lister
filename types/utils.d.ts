@@ -4,6 +4,6 @@ export declare function unique(arr: unknown[]): unknown[];
 export declare function consolidateRanges(inputArray: unknown[], delimiter: string | undefined, { needsSort, needsUnique }: {
     needsSort?: boolean | undefined;
     needsUnique?: boolean | undefined;
-} | undefined, minRangeDelta: number): unknown[];
-export declare function consolidateAlphaRanges(inputArray: unknown[], delimiter?: string): unknown[];
+} | undefined, minRangeDelta: number): string[];
+export declare function consolidateAlphaRanges(inputArray: unknown[], delimiter?: string): string[];
 export declare function expandAlphaRange(fromChar: string, toChar: string): string[];

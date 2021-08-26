@@ -8,10 +8,7 @@ import {
 type ListStringOptions = {
   article?: string;
   comma?: string;
-  delimiter?: string;
-  andor?: string;
   conjunction?: string;
-  separator?: string;
   minRangeDelta?: number;
 }
 
@@ -22,6 +19,10 @@ function isString(value: unknown): value is string {
 }
 
 export default function listString(list: List, options: ListStringOptions | string = {}) {
+  if (list.length <= 1) {
+    return list.join('');
+  }
+
   let andor: string;
 
   if (isString(options)) {
@@ -30,24 +31,26 @@ export default function listString(list: List, options: ListStringOptions | stri
     let [ ,, article, comma ] = arguments;
     options = { article, comma };
   } else {
-    andor = options.andor || options.conjunction || 'and';
+    andor = options.conjunction ?? 'and';
   }
 
   const andOrProvided = Boolean(andor);
+  // ensure whitespace around andor
+  if (andor) andor = andor.replace(/^(?=\S)|(?<=\S)$/g, ' ');
 
   const { article } = options;
 
-  const comma = options.comma || options.separator || ', ';
+  const comma = options.comma ?? ', ';
   const minRangeDelta = options.minRangeDelta || 1;
 
   // is the list an array of numbers or string-versions of numbers?
   let isNumeric = list.every(isInt);
   let isAlpha = false;
-  let arr: unknown[] | null = null;
+  let ranges: string[] | undefined;
   if (isNumeric) {
     let numberList = (Array.from(list) as (string|number)[]).map((a) => parseInt(a as string, 10))
     // is numeric range
-    arr = consolidateRanges(
+    ranges = consolidateRanges(
       numberList,
       '–',
       list,
@@ -56,38 +59,31 @@ export default function listString(list: List, options: ListStringOptions | stri
   } else { // test if alphabetic range
     isAlpha = list.every((x) => /^[a-z]$/i.test(x as string));
     if (isAlpha) {
-      arr = consolidateAlphaRanges(list);
+      ranges = consolidateAlphaRanges(list);
     }
   }
 
-  let delimiter;
-  if (list.length > 2) {
-    if (arr !== null) {
-      if (arr.length > 2) {
-        delimiter = comma;
-      }
+  let delimiter = comma;
+  if (ranges) {
+    list = ranges;
+  } else {
+    if (list.length > 1) {
+        const complex = list.find((x) => /,/.test(`${x}`));
+        if (complex) {
+          delimiter = comma.replace(/,/, ';');
+        }
     } else {
-      const complex = list.find((x) => /,/.test(x as string));
-      delimiter = complex ? comma.replace(/,/, ';') : comma;
+      delimiter = andOrProvided ? andor : '';
+      delimiter = delimiter.replace(/^(?![,.;:\s])/, ' ').replace(/[^,.;:\s]$/, '$& ');
+    }
+
+    // add articles
+    if (article) {
+      list = list.map((item) => `${article} ${item}`);
     }
   }
-
-  if (!delimiter) {
-    delimiter = andOrProvided ? andor : '';
-    delimiter = delimiter.replace(/^(?![,.;:\s])/, ' ').replace(/[^,.;:\s]$/, '$& ');
+  if (andOrProvided && (list.length > 2)) {
+    list.push(`${andor.replace(/^\s+/, '')}${list.pop()}`);
   }
-
-  if (!arr) {
-    arr = list.slice();
-  }
-
-  // add articles
-  if (article) {
-    arr = arr.map((item) => `${article} ${item}`);
-  }
-
-  if (andOrProvided && (arr.length > 2)) {
-    arr.push(`${andor} ${arr.pop()}`);
-  }
-  return arr.join(delimiter);
+  return list.join(list.length === 2 ? andor || delimiter : delimiter);
 }
