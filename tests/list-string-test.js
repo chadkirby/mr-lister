@@ -7,7 +7,7 @@ test('listString list strings', (assert) => {
   assert.equal(listString([ 'apples', 'oranges', 'monkeys' ], 'or'), 'apples, oranges, or monkeys');
   assert.equal(listString([ 'apples', 'oranges', 'monkeys' ], 'or', 'the'), 'the apples, the oranges, or the monkeys');
   assert.equal(listString([ 'apples', 'oranges', 'monkeys' ], 'or', '', '; '), 'apples; oranges; or monkeys');
-  assert.equal(listString([ 'apples', 'oranges', 'monkeys' ], { conjunction: 'or', separator: '; ' }), 'apples; oranges; or monkeys');
+  assert.equal(listString([ 'apples', 'oranges', 'monkeys' ], { conjunction: 'or', comma: '; ' }), 'apples; oranges; or monkeys');
   assert.equal(listString([
     'apples, oranges, and monkeys',
     'peaches',
@@ -26,6 +26,7 @@ function range(start, end) {
 }
 
 test('test can list consecutive integers', (assert) => {
+  assert.equal(listString([ '1.0', 2 ]), '1–2');
   let result = listString(range(1, 10));
   assert.equal(result, '1–10');
   assert.equal(listString(range(-5, 5)), '-5–5');
@@ -37,21 +38,47 @@ test('test can list consecutive integers', (assert) => {
 });
 
 test('test can list consecutive letters', (assert) => {
+  assert.equal(listString(['A', 'B']), 'A–B');
+  assert.equal(listString(['A', 'C']), 'A and C');
   assert.equal(listString(range(65, 75).map((x) => String.fromCharCode(x))), 'A–K');
   assert.equal(listString(range(97, 107).map((x) => String.fromCharCode(x))), 'a–k');
   assert.end();
 });
 
 test('test can list non-consecutive integers', (assert) => {
+  assert.equal(listString([ 1, 7 ]), '1 and 7');
   assert.equal(listString([ 1, 2, 3, 5, 6, 7 ]), '1–3 and 5–7');
   assert.equal(listString([ 3, 2, 6, 5, 6, 1, 7 ]), '1–3 and 5–7');
   assert.equal(listString([ 1, 2, 3, 5, 6, 7, 10 ], '&'), '1–3, 5–7, & 10');
   assert.equal(listString([ 1, 2, 5, 6, 7, 10 ], { conjunction: '&', minRangeDelta: 2 }), '1, 2, 5–7, & 10');
   assert.equal(listString([ 1, 2, 5, 6, 7, 10 ], { conjunction: '&', minRangeDelta: 3 }), '1, 2, 5, 6, 7, & 10');
+
+  assert.end();
+});
+
+test('can specify a falsy conjunction', (assert) => {
+  assert.equal(listString([ 1 ]), '1');
+  assert.equal(listString([ 1 ], ''), '1');
+  assert.equal(listString([ 1 ], 'foobar'), '1');
+  assert.equal(listString([ 1, 5 ]), '1 and 5');
+  assert.equal(listString([ 1, 5 ], { conjunction: '' }), '1, 5');
+  assert.equal(listString([ 1, 3, 5 ], { conjunction: '' }), '1, 3, 5');
+  assert.equal(listString([ 1, 5 ], ''), '1, 5');
+  assert.equal(listString([ 1, 3, 5 ], ''), '1, 3, 5');
+  assert.equal(listString([ 1, 7 ], { conjunction: '', comma: '; ' }), '1; 7');
+  assert.equal(listString([ 1, 3, 7 ], { conjunction: '', comma: '; ' }), '1; 3; 7');
+
   assert.end();
 });
 
 test('test can list non-consecutive letters', (assert) => {
+  assert.equal(listString([
+    'a',
+    'e'
+  ]), 'a and e');
+  assert.equal(listString([
+    'a'
+  ]), 'a');
   assert.equal(listString([
     'a',
     'b',

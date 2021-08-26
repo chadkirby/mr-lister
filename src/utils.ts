@@ -16,7 +16,7 @@ function consolidate(
   delimiter: string,
   getVal: (x: unknown) => number,
   minRangeDelta = 1
-): unknown[] {
+): string[] {
   type RangeBound = { index: number; val: unknown };
   const rangeBegs: RangeBound[] = [];
   const rangeEnds: RangeBound[] = [];
@@ -32,13 +32,13 @@ function consolidate(
       rangeEnds.push({ index, val: arr[index] });
     }
   }
-  let out: unknown[] = [];
+  let out: string[] = [];
   for (const [i, start] of rangeBegs.entries()) {
     const end = rangeEnds[i];
     if (start.val === end.val) {
-      out.push(start.val);
+      out.push(`${start.val}`);
     } else if (getVal(end.val) - getVal(start.val) < minRangeDelta) {
-      out.push(...arr.slice(start.index, end.index + 1));
+      out.push(...arr.slice(start.index, end.index + 1).map(x => `${x}`));
     } else {
       out.push(`${start.val}${delimiter}${end.val}`);
     }
@@ -51,7 +51,7 @@ export function consolidateRanges(
   delimiter = "–",
   { needsSort = true, needsUnique = true } = {},
   minRangeDelta: number
-): unknown[] {
+): string[] {
   let arr = inputArray.slice();
   if (needsUnique) {
     arr = unique(arr) as number[];
@@ -65,7 +65,7 @@ export function consolidateRanges(
 export function consolidateAlphaRanges(
   inputArray: unknown[],
   delimiter = "–"
-): unknown[] {
+): string[] {
   return consolidate(unique(inputArray).sort(), delimiter, (x) =>
     x ? (x as string).charCodeAt(0) : NaN
   );
