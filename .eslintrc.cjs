@@ -1,11 +1,11 @@
 module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
+    sourceType: "module",
   },
   extends: ["plugin:prettier/recommended"],
   plugins: ["@typescript-eslint"],
   ignorePatterns: ["dist"],
-  sourceType: "module",
   overrides: [
     // typescript
     {
