@@ -1,9 +1,10 @@
 {
   "name": "@ckirby/mr-lister",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "format lists of numbers, letters, or arbitrary items",
   "type": "module",
   "main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*"
@@ -11,18 +12,8 @@
   "imports": {
     "#src/*": "./dist/*"
   },
-  "typesVersions": {
-    "*": {
-      "index.d.ts": [
-        "dist/index.d.ts"
-      ],
-      "*": [
-        "dist/*"
-      ]
-    }
-  },
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": ">=12.20.0"
   },
   "scripts": {
     "compile": "tsc -p tsconfig.json",
