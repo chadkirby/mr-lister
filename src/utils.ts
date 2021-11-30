@@ -38,7 +38,7 @@ function consolidate(
     if (start.val === end.val) {
       out.push(`${start.val}`);
     } else if (getVal(end.val) - getVal(start.val) < minRangeDelta) {
-      out.push(...arr.slice(start.index, end.index + 1).map(x => `${x}`));
+      out.push(...arr.slice(start.index, end.index + 1).map((x) => `${x}`));
     } else {
       out.push(`${start.val}${delimiter}${end.val}`);
     }
@@ -47,7 +47,7 @@ function consolidate(
 }
 
 export function consolidateRanges(
-  inputArray: unknown[],
+  inputArray: number[],
   delimiter = "–",
   { needsSort = true, needsUnique = true } = {},
   minRangeDelta: number
@@ -57,13 +57,13 @@ export function consolidateRanges(
     arr = unique(arr) as number[];
   }
   if (needsSort) {
-    arr.sort((a, b) => <number>a - <number>b);
+    arr.sort((a, b) => a - b);
   }
   return consolidate(arr, delimiter, (x) => x as number, minRangeDelta);
 }
 
 export function consolidateAlphaRanges(
-  inputArray: unknown[],
+  inputArray: string[],
   delimiter = "–"
 ): string[] {
   return consolidate(unique(inputArray).sort(), delimiter, (x) =>
