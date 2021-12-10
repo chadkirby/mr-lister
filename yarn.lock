@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@ckirby/block-re@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ckirby/block-re/-/block-re-3.0.0.tgz#77019f1b87424dc8086a255e538b070905c66f1c"
-  integrity sha512-T7tc1BS87NVObvEjlxm3fSnW+f0p2aeXLgMCvqwtcBCOsvDiRQL4LGylyHsOtHbZwYNQSpqT5zrkV7xYQ4x7wQ==
+"@ckirby/block-re@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@ckirby/block-re/-/block-re-3.0.1.tgz#a439054c0ba0b02ee789b183b386adf8faeececb"
+  integrity sha512-naT8Pg5gEpUZTJGawX2fRNgb1jOPxMuuHEpye9F6NroS7/zucR69SVJ4BW4g3pCm1tHSKprATO5mIox1YooYeA==
 
 "@ember-data/rfc395-data@^0.0.4":
   version "0.0.4"

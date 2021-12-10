@@ -37,7 +37,7 @@
     "list"
   ],
   "dependencies": {
-    "@ckirby/block-re": "3.0.0"
+    "@ckirby/block-re": "3.0.1"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
