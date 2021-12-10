@@ -1,6 +1,6 @@
 {
   "name": "@ckirby/mr-lister",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "format lists of numbers, letters, or arbitrary items",
   "type": "module",
   "main": "./dist/index.js",
