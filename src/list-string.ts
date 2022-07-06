@@ -47,7 +47,7 @@ export default function listString(...args: OptionsArgs | OldArgs): string {
 
   const andOrProvided = Boolean(andor);
   // ensure whitespace around andor
-  if (andor) andor = andor.replace(/^(?=\S)|(?<=\S)$/g, " ");
+  if (andor) andor = andor.replace(/^(?=\S)/g, " ").replace(/(\S)$/g, "$1 ");
 
   const { article } = options;
 

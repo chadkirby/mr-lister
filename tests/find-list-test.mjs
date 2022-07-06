@@ -85,5 +85,51 @@ test("findList list strings", (assert) => {
     ]
   );
 
+  assert.deepEqual(
+    findList(
+      `Thingie 1A, Thingie 4, Thingie 5A-Thingie 5C, and Thingie 2 are confusing.`,
+      {
+        item: /\d(?:[A-Z](?:[-–][A-Z])?)?\b/g,
+      }
+    ),
+    [
+      {
+        index: 0,
+        items: [{ index: 8, item: "1A" }],
+        match: "Thingie 1A",
+        label: "Thingie",
+        list: [1],
+      },
+      {
+        index: 12,
+        items: [{ index: 8, item: "4" }],
+        match: "Thingie 4",
+        label: "Thingie",
+        list: [4],
+      },
+      {
+        index: 23,
+        items: [{ index: 8, item: "5A" }],
+        match: "Thingie 5A",
+        label: "Thingie",
+        list: [5],
+      },
+      {
+        index: 34,
+        items: [{ index: 8, item: "5C" }],
+        match: "Thingie 5C",
+        label: "Thingie",
+        list: [5],
+      },
+      {
+        index: 50,
+        items: [{ index: 8, item: "2" }],
+        match: "Thingie 2",
+        label: "Thingie",
+        list: [2],
+      },
+    ]
+  );
+
   assert.end();
 });
