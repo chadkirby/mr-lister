@@ -22,13 +22,6 @@ export function findList(
   label: string;
   list: number[];
 }[] {
-  // match one or more items
-  const rangePattern = re`/(?:
-    (?: ${item} )
-    // match trailing punctuation and a conjunction if there are more numbers thereafter
-    (?: [\s,;]* ${conjunctions}? \s* (?= ${item}) )?
-  )+/g`;
-
   const rangeToFind = re`/
     \b (?<label>
         // allow a label made of non-digit word chars
@@ -39,7 +32,11 @@ export function findList(
         [.]?
       )?
       \s*
-      (?<range>${rangePattern})
+      (?<range>(?:
+        (?: ${item} )
+        // match trailing punctuation and a conjunction if there are more numbers thereafter
+        (?: [\s,;]* ${conjunctions}? \s* (?= ${item}) )?
+      )+)
   /g`;
   return matchAll(text, rangeToFind).map((found) => {
     const { index, groups } = found;
