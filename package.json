@@ -18,7 +18,7 @@
   "scripts": {
     "compile": "tsc -p tsconfig.json",
     "prepublishOnly": "yarn compile",
-    "watch": "yarn tsc-watch",
+    "watch": "tsc -b tsconfig.json --watch",
     "test": "yarn lint && yarn test:tape",
     "test:ci": "yarn compile && yarn lint && yarn test:tape",
     "test:tape": "tape `find tests -name '*-test.mjs'`",
